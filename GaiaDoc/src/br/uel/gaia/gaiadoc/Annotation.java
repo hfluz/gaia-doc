@@ -1,19 +1,34 @@
 package br.uel.gaia.gaiadoc;
 
-
+/**
+ * Classe que armazena o nome e o conteúdo da anotação.
+ * @author humberto
+ *
+ */
 public class Annotation {
 	private String name;
 	private String content;
 
+	public Annotation(String name)
+	{
+		this.setName(name);
+	}
+	
 	public Annotation(String name, String content)
 	{
 		this.setName(name);
 		this.setContent(content);
 	}
 	
-	public boolean isValid(String annotation)
+	/**
+	 * Verifica se a anotação encontrada pertence ao conjunto de anotações
+	 * GaiaDoc.
+	 * 
+	 * @return True, se a anotação for válida, False, em caso contrário.
+	 */
+	public boolean isValid()
 	{
-		switch (annotation.toLowerCase()) {
+		switch (this.name.toLowerCase()) {
 		case "name":
 		case "description":
 		case "writer":

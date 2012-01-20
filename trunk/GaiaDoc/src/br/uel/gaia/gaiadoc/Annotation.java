@@ -58,6 +58,8 @@ public class Annotation {
 	}
 
 	public void setContent(String content) {
-		this.content = content;
+		if(this.content == null)
+			this.content = content;
+		else this.content += " " + content;
 	}
 }

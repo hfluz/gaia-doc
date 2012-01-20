@@ -33,7 +33,7 @@ public class Example {
 //A partir do segundo bloco, o status passa a ser o A, e se torna necessário analisar o bloco
 //inteiro para determinar se seu contexto é de método ou de atributo.
 //Atributos podem conter apenas a anotação description (podem ser utilizados talvez como um
-//dicionário, seu nome é o mesmo do atributo declarado.
+//dicionário), seu nome é o mesmo do atributo declarado.
 //Métodos devem conter sempre, a anotação @basicFlow ou @alternativeFlow, nunca as duas simultaneamente
 //São também permitidas as tags @performer (no caso do ator participar apenas de uma ação específica),
 //@extension, @specialRequirement, @preCondition e @postCondition.

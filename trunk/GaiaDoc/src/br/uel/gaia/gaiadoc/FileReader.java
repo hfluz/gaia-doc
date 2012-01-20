@@ -5,26 +5,38 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
+import br.uel.gaia.gaiadoc.structure.Class;
 import br.uel.gaia.gaiadoc.structure.Component;
 
 /**
- * Classe responsável por ler o arquivo e convertê-lo em uma lista de Components, que posteriormente será convertida em PDF.
+ * Classe responsável por ler o arquivo e convertê-lo em uma lista de
+ * Components, que posteriormente será convertida em PDF.
+ * 
  * @author humberto
- *
+ * 
  */
 public class FileReader {
 	private Path file;
 	private Status status;
+	private Block block;
+	private br.uel.gaia.gaiadoc.structure.Class classe;
+	List<Annotation> temp;
 
 	/**
 	 * Estados do leitor.
+	 * 
 	 * @author humberto
-	 *
+	 * 
 	 */
 	public enum Status {
 		INITIAL, A, B, C, D, FINAL
+	}
+
+	public enum Block {
+		NEW, SAME
 	}
 
 	public FileReader(Path path) {
@@ -32,6 +44,8 @@ public class FileReader {
 		if (Files.exists(path) && Files.isRegularFile(path))
 			file = path;
 		status = Status.INITIAL;
+		block = Block.NEW;
+		classe = new Class();
 		// TODO disparar exceção.
 	}
 
@@ -70,12 +84,39 @@ public class FileReader {
 	}
 
 	/**
-	 * Bloco inicial, que descreve as informações do caso de uso, representado pela classe encontrada.
-	 * @param line Linha do arquivo.
+	 * Bloco inicial, que descreve as informações do caso de uso, representado
+	 * pela classe encontrada.
+	 * 
+	 * @param line
+	 *            Linha do arquivo.
 	 */
 	public void processInitial(String line) {
-
-		//if()
+		if (block.equals(Block.NEW)) {
+			if (StringUtils.isCommentBlock(line)) {
+				line = StringUtils.clearLine(line);
+				if (!line.isEmpty()) {
+					temp = new ArrayList<Annotation>();
+					block = Block.SAME;
+					Annotation a = StringUtils.getAnnotation(line);
+					temp.add(a);
+				}
+			}
+		} else {
+			if (StringUtils.isCommentBlock(line)) {
+				line = StringUtils.clearLine(line);
+				Annotation a = StringUtils.getAnnotation(line);
+				if (a.getName() == null)
+					temp.add(a);
+				else {
+					temp.get(temp.size()).setContent(a.getContent());
+				}
+			}
+			if (StringUtils.isCommentBlockEnd(line)) {
+				block = Block.NEW;
+				status = Status.A;
+				classe.setAnnotations(temp);
+			}
+		}
 	}
 
 	public void processA(String line) {
@@ -97,4 +138,5 @@ public class FileReader {
 	public void processFinal(String line) {
 
 	}
+
 }

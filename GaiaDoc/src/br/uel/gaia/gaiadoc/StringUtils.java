@@ -16,16 +16,20 @@ public class StringUtils {
 	 * @return Linha formatada.
 	 */
 	public static String clearLine(String line) {
-		String[] vector = line.split(" ");
-		String result = "";
-		for (String s : vector) {
-			if (!s.equals("/**") && !s.equals("*/") && !s.equals("*")
-					&& !s.isEmpty())
-				result += s + " ";
-		}
-		return result.substring(0, result.length() - 1); // Substring que exclui
-															// o último espaço
-															// em branco.
+		if (!line.isEmpty()) {
+			String[] vector = line.split(" ");
+			String result = "";
+			for (String s : vector) {
+				if (!s.equals("/**") && !s.equals("*/") && !s.equals("*")
+						&& !s.isEmpty())
+					result += s + " ";
+			}
+			if (!result.isEmpty())
+				// Substring que exclui o último espaço em branco.
+				return result.substring(0, result.length() - 1); 
+			else return result;
+		} else
+			return line;
 	}
 
 	/**
@@ -35,12 +39,20 @@ public class StringUtils {
 	 *            Linha do arquivo.
 	 * @return True, se for bloco de comentário, False, em caso contrário.
 	 */
-	public boolean isCommentBlock(String line) {
-		String[] vector = line.split(" ");
-		if (vector[1].equals("/**") || vector[1].equals("*"))
-			return true;
-		else
-			return false;
+	public static boolean isCommentBlock(String line) {
+		if (!line.isEmpty()) {
+			String[] vector = line.split(" ");
+			for (String s : vector) {
+				if (!s.isEmpty()) {
+					if (s.equals("/**") || s.equals("*"))
+						return true;
+					else
+						return false;
+				}
+			}
+
+		}
+		return false;
 	}
 
 	/**
@@ -51,7 +63,7 @@ public class StringUtils {
 	 * @return True, se encerrar o bloco de comentário, False, em caso
 	 *         contrário.
 	 */
-	public boolean isCommentBlockEnd(String line) {
+	public static boolean isCommentBlockEnd(String line) {
 		String[] vector = line.split(" ");
 		if (vector[1].equals("*/"))
 			return true;
@@ -66,7 +78,7 @@ public class StringUtils {
 	 *            Linha do arquivo.
 	 * @return Anotação, se houver, ou nulo, em caso contrário.
 	 */
-	public Annotation getAnnotation(String line) {
+	public static Annotation getAnnotation(String line) {
 		String[] vector = line.split(" ");
 		String name = "";
 		String content = "";

@@ -26,6 +26,11 @@ public class Example {
 	public void executeAction(){}
 }
 
+//A lista temp guarda todas as anotações do bloco, quando o bloco chega ao fim as anotações são lidas e o bloco é classificado como de atributo ou de método.
+
+//É de atributo se possui apenas a anotação description.
+//É de método se possui a anotação @basicFlow ou @alternativeFlow.
+
 //Primeiro bloco de comentário sempre é o da classe.
 //Anotações permitidas: @name, @description, @writer, @performer, @extension, @specialRequirement,
 //preCondition, postCondition

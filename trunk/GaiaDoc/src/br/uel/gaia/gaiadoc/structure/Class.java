@@ -1,20 +1,27 @@
 package br.uel.gaia.gaiadoc.structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.uel.gaia.gaiadoc.Annotation;
 
 public class Class implements Component {
-	private List<Annotation> annotations;
+	private List<Annotation> properties;
 	private List<Method> methods;
 	private List<Attribute> attributes;
+	
+	public Class(){
+		properties = new ArrayList<Annotation>();
+		methods = new ArrayList<Method>();
+		attributes = new ArrayList<Attribute>();
+	}
 
 	public List<Annotation> getAnnotations() {
-		return annotations;
+		return properties;
 	}
 
 	public void setAnnotations(List<Annotation> annotations) {
-		this.annotations = annotations;
+		this.properties = annotations;
 	}
 
 	public List<Method> getMethods() {

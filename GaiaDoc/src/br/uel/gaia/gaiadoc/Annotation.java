@@ -34,7 +34,7 @@ public class Annotation {
 		case "writer":
 		case "performer":
 		case "extension":
-		case "specialrequirements":
+		case "specialrequirement":
 		case "precondition":
 		case "postcondition":
 		case "basicflow":

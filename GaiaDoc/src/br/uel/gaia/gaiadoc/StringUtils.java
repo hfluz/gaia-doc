@@ -20,14 +20,15 @@ public class StringUtils {
 			String[] vector = line.split(" ");
 			String result = "";
 			for (String s : vector) {
-				if (!s.equals("/**") && !s.equals("*/") && !s.equals("*")
+				if (!s.equals("/**") && !s.equals("*/") && !s.equals("*") && !s.equals("\t")
 						&& !s.isEmpty())
 					result += s + " ";
 			}
 			if (!result.isEmpty())
 				// Substring que exclui o último espaço em branco.
-				return result.substring(0, result.length() - 1); 
-			else return result;
+				return result.substring(0, result.length() - 1);
+			else
+				return result;
 		} else
 			return line;
 	}
@@ -40,6 +41,7 @@ public class StringUtils {
 	 * @return True, se for bloco de comentário, False, em caso contrário.
 	 */
 	public static boolean isCommentBlock(String line) {
+		line = line.replaceAll("\\t", "");
 		if (!line.isEmpty()) {
 			String[] vector = line.split(" ");
 			for (String s : vector) {
@@ -91,11 +93,16 @@ public class StringUtils {
 			} else if (annotationFound)
 				content += s + " ";
 		}
-		Annotation annotation = new Annotation(name, content.substring(0,
-				content.length() - 1));
-		if (annotation.isValid())
-			return annotation;
-		else
-			return null;
+		Annotation annotation;
+		if (annotationFound) {
+			if(name.equals("basicFlow") || name.equals("alternativeFlow"))
+				annotation = new Annotation(name);
+			else annotation = new Annotation(name, content.substring(0,
+					content.length() - 1));
+			if (annotation.isValid())
+				return annotation;
+			else
+				return null;
+		} else return null;
 	}
 }

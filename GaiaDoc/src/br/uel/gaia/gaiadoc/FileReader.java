@@ -8,8 +8,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.uel.gaia.gaiadoc.structure.Attribute;
 import br.uel.gaia.gaiadoc.structure.Class;
 import br.uel.gaia.gaiadoc.structure.Component;
+import br.uel.gaia.gaiadoc.structure.Method;
 
 /**
  * Classe responsável por ler o arquivo e convertê-lo em uma lista de
@@ -95,23 +97,26 @@ public class FileReader {
 			if (StringUtils.isCommentBlock(line)) {
 				line = StringUtils.clearLine(line);
 				if (!line.isEmpty()) {
-					temp = new ArrayList<Annotation>();
-					block = Block.SAME;
 					Annotation a = StringUtils.getAnnotation(line);
-					temp.add(a);
+					if (a != null) {
+						temp = new ArrayList<Annotation>();
+						temp.add(a);
+						block = Block.SAME;
+					}
 				}
 			}
 		} else {
 			if (StringUtils.isCommentBlock(line)) {
 				line = StringUtils.clearLine(line);
 				Annotation a = StringUtils.getAnnotation(line);
-				if (a.getName() == null)
-					temp.add(a);
-				else {
-					temp.get(temp.size()).setContent(a.getContent());
+				if (a != null) {
+					if (a.getName() != null)
+						temp.add(a);
+					else {
+						temp.get(temp.size() - 1).setContent(a.getContent());
+					}
 				}
-			}
-			if (StringUtils.isCommentBlockEnd(line)) {
+			} else if (StringUtils.isCommentBlockEnd(line)) {
 				block = Block.NEW;
 				status = Status.A;
 				classe.setAnnotations(temp);
@@ -120,11 +125,59 @@ public class FileReader {
 	}
 
 	public void processA(String line) {
-
+		if (block.equals(Block.NEW)) {
+			if (StringUtils.isCommentBlock(line)) {
+				line = StringUtils.clearLine(line);
+				if (!line.isEmpty()) {
+					Annotation a = StringUtils.getAnnotation(line);
+					if (a != null) {
+						temp = new ArrayList<Annotation>();
+						temp.add(a);
+						if (a.getName().equals("basicFlow")
+								|| a.getName().equals("alternativeFlow"))
+							status = Status.B;
+						block = Block.SAME;
+					}
+				}
+			}
+		} else {
+			if (StringUtils.isCommentBlock(line)) {
+				line = StringUtils.clearLine(line);
+				Annotation a = StringUtils.getAnnotation(line);
+				if (a != null) {
+					if (a.getName() != null) {
+						temp.add(a);
+						if (a.getName().equals("basicFlow")
+								|| a.getName().equals("alternativeFlow"))
+							status = Status.B;
+					} else {
+						temp.get(temp.size() - 1).setContent(a.getContent());
+					}
+				}
+			} else if (StringUtils.isCommentBlockEnd(line)) {
+				block = Block.NEW;
+				status = Status.A;
+				classe.getAttributes().add(new Attribute(temp));
+			}
+		}
 	}
 
 	public void processB(String line) {
-
+		if (StringUtils.isCommentBlock(line)) {
+			line = StringUtils.clearLine(line);
+			Annotation a = StringUtils.getAnnotation(line);
+			if (a != null) {
+				if (a.getName() != null)
+					temp.add(a);
+				else {
+					temp.get(temp.size() - 1).setContent(a.getContent());
+				}
+			}
+		} else if (StringUtils.isCommentBlockEnd(line)) {
+			block = Block.NEW;
+			status = Status.A;
+			classe.getMethods().add(new Method(temp));
+		}
 	}
 
 	public void processC(String line) {

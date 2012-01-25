@@ -1,5 +1,7 @@
 package br.uel.gaia.gaiadoc;
 
+import br.uel.gaia.gaiadoc.structure.Annotation;
+
 /**
  * Classe que contém diversos métodos para manipular strings.
  * 
@@ -20,8 +22,8 @@ public class StringUtils {
 			String[] vector = line.split(" ");
 			String result = "";
 			for (String s : vector) {
-				if (!s.equals("/**") && !s.equals("*/") && !s.equals("*") && !s.equals("\t")
-						&& !s.isEmpty())
+				if (!s.equals("/**") && !s.equals("*/") && !s.equals("*")
+						&& !s.equals("\t") && !s.isEmpty())
 					result += s + " ";
 			}
 			if (!result.isEmpty())
@@ -95,14 +97,16 @@ public class StringUtils {
 		}
 		Annotation annotation;
 		if (annotationFound) {
-			if(name.equals("basicFlow") || name.equals("alternativeFlow"))
+			if (name.equals("basicFlow") || name.equals("alternativeFlow"))
 				annotation = new Annotation(name);
-			else annotation = new Annotation(name, content.substring(0,
-					content.length() - 1));
+			else
+				annotation = new Annotation(name, content.substring(0,
+						content.length() - 1));
 			if (annotation.isValid())
 				return annotation;
 			else
 				return null;
-		} else return null;
+		} else
+			return null;
 	}
 }

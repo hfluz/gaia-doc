@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Classe responsável por ler o sistema de arquivos a partir do caminho (PATH)
  * fornecido e procurar arquivos com a extensão .java, delegando o trabalho de
- * analisar o arquivo para a classe AnalisadorSintatico.
+ * analisar e converter o conteúdo do arquivo em PDF para a classe FileReader.
  * 
  * @author humberto
  * 
@@ -34,9 +34,8 @@ public class FileSystemReader {
 		Path dir = Paths.get("/home/humberto/workspace/mestrado/GaiaDoc");
 		try {
 			Files.walkFileTree(dir, new GaiaDocVisitor());
-			for(Path path : classes)
-			{
-				if(path.getFileName().endsWith("Example.java"))
+			for (Path path : classes) {
+				if (path.getFileName().endsWith("Example.java"))
 					System.out.println(path.getFileName());
 			}
 		} catch (IOException e) {
@@ -53,10 +52,12 @@ public class FileSystemReader {
 		private PathMatcher matcher;
 
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
-			matcher = FileSystems.getDefault().getPathMatcher("glob:*Example.java");
-			if (attr.isRegularFile() && matcher.matches(file.getFileName()) && !classes.contains(file)) {
+			matcher = FileSystems.getDefault().getPathMatcher(
+					"glob:*Example.java");
+			if (attr.isRegularFile() && matcher.matches(file.getFileName())
+					&& !classes.contains(file)) {
 				classes.add(file);
-				//System.out.format("%s encontrado\n", file.getFileName());
+				// System.out.format("%s encontrado\n", file.getFileName());
 			}
 			return CONTINUE;
 		}

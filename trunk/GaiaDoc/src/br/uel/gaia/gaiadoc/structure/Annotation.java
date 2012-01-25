@@ -1,4 +1,4 @@
-package br.uel.gaia.gaiadoc;
+package br.uel.gaia.gaiadoc.structure;
 
 /**
  * Classe que armazena o nome e o conteúdo da anotação.

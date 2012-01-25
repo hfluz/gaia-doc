@@ -3,7 +3,6 @@ package br.uel.gaia.gaiadoc.structure;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.uel.gaia.gaiadoc.Annotation;
 
 public class Class implements Component {
 	private List<Annotation> properties;

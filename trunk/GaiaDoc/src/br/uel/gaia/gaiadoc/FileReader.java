@@ -8,14 +8,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.uel.gaia.gaiadoc.structure.Annotation;
 import br.uel.gaia.gaiadoc.structure.Attribute;
 import br.uel.gaia.gaiadoc.structure.Class;
 import br.uel.gaia.gaiadoc.structure.Component;
 import br.uel.gaia.gaiadoc.structure.Method;
 
 /**
- * Classe responsável por ler o arquivo e convertê-lo em uma lista de
- * Components, que posteriormente será convertida em PDF.
+ * Classe responsável por ler o arquivo e convertê-lo em um objeto do tipo
+ * br.uel.gaia.gaiadoc.structure.Class, que posteriormente será convertida em
+ * PDF.
  * 
  * @author humberto
  * 
@@ -34,7 +36,7 @@ public class FileReader {
 	 * 
 	 */
 	public enum Status {
-		INITIAL, A, B, C, D, FINAL
+		INITIAL, ATTRIBUTE, METHOD, FINAL
 	}
 
 	public enum Block {
@@ -60,17 +62,11 @@ public class FileReader {
 				case INITIAL:
 					processInitial(line);
 					break;
-				case A:
+				case ATTRIBUTE:
 					processA(line);
 					break;
-				case B:
+				case METHOD:
 					processB(line);
-					break;
-				case C:
-					processC(line);
-					break;
-				case D:
-					processD(line);
 					break;
 				case FINAL:
 					processFinal(line);
@@ -118,12 +114,22 @@ public class FileReader {
 				}
 			} else if (StringUtils.isCommentBlockEnd(line)) {
 				block = Block.NEW;
-				status = Status.A;
+				status = Status.ATTRIBUTE;
 				classe.setAnnotations(temp);
 			}
 		}
 	}
 
+	/**
+	 * Método que processa o arquivo a partir do fim do primeiro bloco de
+	 * comentário. A cada novo bloco encerrado, se o status for igual a A, quer
+	 * dizer que o bloco de comentário pertence a um atributo. Se as anotações @basicFlow
+	 * ou @alternativeFlow forem encontradas o status muda para B e o método
+	 * processB passa a ser chamado ao invés.
+	 * 
+	 * @param line
+	 *            Linha do arquivo.
+	 */
 	public void processA(String line) {
 		if (block.equals(Block.NEW)) {
 			if (StringUtils.isCommentBlock(line)) {
@@ -135,7 +141,7 @@ public class FileReader {
 						temp.add(a);
 						if (a.getName().equals("basicFlow")
 								|| a.getName().equals("alternativeFlow"))
-							status = Status.B;
+							status = Status.METHOD;
 						block = Block.SAME;
 					}
 				}
@@ -149,19 +155,27 @@ public class FileReader {
 						temp.add(a);
 						if (a.getName().equals("basicFlow")
 								|| a.getName().equals("alternativeFlow"))
-							status = Status.B;
+							status = Status.METHOD;
 					} else {
 						temp.get(temp.size() - 1).setContent(a.getContent());
 					}
 				}
 			} else if (StringUtils.isCommentBlockEnd(line)) {
 				block = Block.NEW;
-				status = Status.A;
+				status = Status.ATTRIBUTE;
 				classe.getAttributes().add(new Attribute(temp));
 			}
 		}
 	}
 
+	/**
+	 * Se este método for utilizado para processar uma linha do arquivo, isso
+	 * significa que o bloco de comentário que está sendo lido pertence a um
+	 * método.
+	 * 
+	 * @param line
+	 *            Linha do arquivo.
+	 */
 	public void processB(String line) {
 		if (StringUtils.isCommentBlock(line)) {
 			line = StringUtils.clearLine(line);
@@ -175,7 +189,7 @@ public class FileReader {
 			}
 		} else if (StringUtils.isCommentBlockEnd(line)) {
 			block = Block.NEW;
-			status = Status.A;
+			status = Status.ATTRIBUTE;
 			classe.getMethods().add(new Method(temp));
 		}
 	}

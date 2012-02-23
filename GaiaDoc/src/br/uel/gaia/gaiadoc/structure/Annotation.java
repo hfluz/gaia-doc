@@ -44,6 +44,44 @@ public class Annotation {
 			return false;
 		}
 	}
+	
+	public boolean belongsToMethod(){
+		switch (this.name.toLowerCase()) {
+		case "description":
+		case "performer":
+		case "basicflow":
+		case "alternativeflow":
+			return true;
+		default:
+			return false;
+		}
+	}
+	
+	public boolean belongsToAttribute(){
+		switch (this.name.toLowerCase()) {
+		case "description":
+			return true;
+		default:
+			return false;
+		}
+	}
+	
+	public boolean belongsToClass()
+	{
+		switch (this.name.toLowerCase()) {
+		case "name":
+		case "description":
+		case "writer":
+		case "performer":
+		case "extension":
+		case "specialrequirement":
+		case "precondition":
+		case "postcondition":
+			return true;
+		default:
+			return false;
+		}
+	}
 
 	public String getName() {
 		return name;

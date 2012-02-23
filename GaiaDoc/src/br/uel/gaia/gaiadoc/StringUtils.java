@@ -97,11 +97,11 @@ public class StringUtils {
 		}
 		Annotation annotation;
 		if (annotationFound) {
-			if (name.equals("basicFlow") || name.equals("alternativeFlow"))
+			if (name.startsWith("basicFlow") || name.startsWith("alternativeFlow"))
 				annotation = new Annotation(name);
-			else
+			else{System.out.println(name);
 				annotation = new Annotation(name, content.substring(0,
-						content.length() - 1));
+						content.length() - 1));}
 			if (annotation.isValid())
 				return annotation;
 			else

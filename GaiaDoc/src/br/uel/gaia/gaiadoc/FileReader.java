@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.uel.gaia.gaiadoc.exception.InvalidAnnotationException;
 import br.uel.gaia.gaiadoc.structure.Annotation;
 import br.uel.gaia.gaiadoc.structure.Attribute;
 import br.uel.gaia.gaiadoc.structure.Class;
@@ -77,6 +78,8 @@ public class FileReader {
 			}
 		} catch (IOException x) {
 			System.err.format("IOException: %s%n", x);
+		} catch (InvalidAnnotationException iae) {
+			System.err.format("IOException: %s%n", iae);
 		}
 		return null;
 	}
@@ -88,7 +91,7 @@ public class FileReader {
 	 * @param line
 	 *            Linha do arquivo.
 	 */
-	public void processInitial(String line) {
+	public void processInitial(String line) throws InvalidAnnotationException {
 		if (block.equals(Block.NEW)) {
 			if (StringUtils.isCommentBlock(line)) {
 				line = StringUtils.clearLine(line);
@@ -106,16 +109,18 @@ public class FileReader {
 				line = StringUtils.clearLine(line);
 				Annotation a = StringUtils.getAnnotation(line);
 				if (a != null) {
-					if (a.getName() != null)
-						temp.add(a);
-					else {
+					if (a.getName() != null) {
+						if (a.belongsToClass())
+							temp.add(a);
+						else throw new InvalidAnnotationException(a.getName());
+					} else {
 						temp.get(temp.size() - 1).setContent(a.getContent());
 					}
 				}
 			} else if (StringUtils.isCommentBlockEnd(line)) {
 				block = Block.NEW;
 				status = Status.ATTRIBUTE;
-				classe.setAnnotations(temp);
+				classe.setProperties(temp);
 			}
 		}
 	}
@@ -205,5 +210,15 @@ public class FileReader {
 	public void processFinal(String line) {
 
 	}
+
+	public br.uel.gaia.gaiadoc.structure.Class getClasse() {
+		return classe;
+	}
+
+	public void setClasse(br.uel.gaia.gaiadoc.structure.Class classe) {
+		this.classe = classe;
+	}
+	
+	
 
 }

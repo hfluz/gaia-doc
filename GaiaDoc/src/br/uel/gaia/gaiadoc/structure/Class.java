@@ -15,12 +15,24 @@ public class Class implements Component {
 		attributes = new ArrayList<Attribute>();
 	}
 
-	public List<Annotation> getAnnotations() {
+	public List<String> getProperty(String propertyName){
+		List<String> result = new ArrayList<String>();
+		for (Annotation a : properties) {
+			if (a.getName().equals(propertyName)){
+				result.add(a.getContent());
+				if(propertyName.equals("name") || propertyName.equals("description"))
+					return result;
+			}
+		}
+		return result;
+	}
+	
+	public List<Annotation> getProperties() {
 		return properties;
 	}
 
-	public void setAnnotations(List<Annotation> annotations) {
-		this.properties = annotations;
+	public void setProperties(List<Annotation> properties) {
+		this.properties = properties;
 	}
 
 	public List<Method> getMethods() {

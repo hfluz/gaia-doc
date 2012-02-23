@@ -3,6 +3,8 @@ package br.uel.gaia.gaiadoc;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import br.uel.gaia.gaiadoc.pdf.PDFParser;
+
 public class Main {
 	public static void main(String[] args) {
 		FileSystemReader systemReader = new FileSystemReader();
@@ -11,6 +13,7 @@ public class Main {
 			if (path.endsWith("Example.java")) {
 				FileReader fileReader = new FileReader(path);
 				fileReader.read();
+				new PDFParser(fileReader.getClasse()).parseDocument();
 			}
 		}
 		try {

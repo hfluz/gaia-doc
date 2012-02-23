@@ -1,4 +1,4 @@
-package br.uel.gaia.gaiadoc;
+package br.uel.gaia.gaiadoc.examples;
 
 /**
  * @name Manter Exemplo

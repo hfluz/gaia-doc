@@ -1,5 +1,8 @@
 package br.uel.gaia.gaiadoc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.uel.gaia.gaiadoc.structure.Annotation;
 
 /**
@@ -97,16 +100,77 @@ public class StringUtils {
 		}
 		Annotation annotation;
 		if (annotationFound) {
-			if (name.startsWith("basicFlow") || name.startsWith("alternativeFlow"))
-				annotation = new Annotation(name);
-			else{System.out.println(name);
+			if (name.startsWith("basicFlow")) {
+				annotation = new Annotation("basicFlow");
+				annotation.setParameters(getParametroBasicFlow(name));
+			} else if (name.startsWith("alternativeFlow")) {
+				annotation = new Annotation("alternativeFlow");
+				annotation.setParameters(getParametroAlternativeFlow(name));
+			} else {
+				System.out.println(name);
 				annotation = new Annotation(name, content.substring(0,
-						content.length() - 1));}
+						content.length() - 1));
+			}
 			if (annotation.isValid())
 				return annotation;
 			else
 				return null;
 		} else
 			return null;
+	}
+
+	private static List<String> getParametroAlternativeFlow(String name) {
+		boolean entreParenteses = false;
+		String parametro = "";
+		for (int i = 0; i < name.length(); i++) {
+			if (name.charAt(i) == '(')
+				entreParenteses = true;
+			else if (name.charAt(i) == ')' && parametro.length() == 0) {
+				System.out.println("ERRO: Nenhum parâmetro foi informado.");
+			} else if (name.charAt(i) == ')') {
+				entreParenteses = false;
+				break;
+			}
+			if (entreParenteses && name.charAt(i) != ')'
+					&& name.charAt(i) != '(')
+				parametro += name.charAt(i);
+			if (i + 1 == name.length() && entreParenteses)
+				System.out
+						.println("ERRO: Término de linha sem fechar parenteses.");
+		}
+		String[] splitedList = parametro.split(",");
+		if (splitedList[0].startsWith("'"))
+			splitedList[0] = splitedList[0].substring(1);
+		if (splitedList[0].endsWith("'"))
+			splitedList[0] = splitedList[0].substring(0,
+					splitedList[0].length() - 1);
+		List<String> parametros = new ArrayList<>();
+		parametros.add(splitedList[0]);
+		parametros.add(splitedList[1]);
+		return parametros;
+	}
+
+	public static List<String> getParametroBasicFlow(String name) {
+		boolean entreParenteses = false;
+		String parametro = "";
+		for (int i = 0; i < name.length(); i++) {
+			if (name.charAt(i) == '(')
+				entreParenteses = true;
+			else if (name.charAt(i) == ')' && parametro.length() == 0) {
+				System.out.println("ERRO: Nenhum parâmetro foi informado.");
+			} else if (name.charAt(i) == ')') {
+				entreParenteses = false;
+				break;
+			}
+			if (entreParenteses && name.charAt(i) != ')'
+					&& name.charAt(i) != '(')
+				parametro += name.charAt(i);
+			if (i + 1 == name.length() && entreParenteses)
+				System.out
+						.println("ERRO: Término de linha sem fechar parenteses.");
+		}
+		List<String> parametros = new ArrayList<>();
+		parametros.add(parametro);
+		return parametros;
 	}
 }

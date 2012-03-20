@@ -8,6 +8,8 @@ public class Method implements Component{
 	private String invokedBy;
 	private String invokes;
 	
+	
+	
 	public Method(List<Annotation> properties)
 	{
 		this.properties = properties;

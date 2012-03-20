@@ -63,7 +63,7 @@ public class PDFParser {
 			includeUseCasePreCondition();
 			includeUseCasePostCondition();
 			includeUseCaseSpecialRequirements();
-			classe.getMethods()
+			//classe.getMethods()
 
 		} catch (DocumentException e) {
 			// handle exception

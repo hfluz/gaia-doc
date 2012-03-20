@@ -1,33 +1,34 @@
 package br.uel.gaia.gaiadoc.structure;
 
+import java.util.List;
+
 /**
  * Classe que armazena o nome e o conteúdo da anotação.
+ * 
  * @author humberto
- *
+ * 
  */
 public class Annotation {
 	private String name;
 	private String content;
+	private List<String> parameters;
 
-	public Annotation(String name)
-	{
+	public Annotation(String name) {
 		this.setName(name);
 	}
-	
-	public Annotation(String name, String content)
-	{
+
+	public Annotation(String name, String content) {
 		this.setName(name);
 		this.setContent(content);
 	}
-	
+
 	/**
 	 * Verifica se a anotação encontrada pertence ao conjunto de anotações
 	 * GaiaDoc.
 	 * 
 	 * @return True, se a anotação for válida, False, em caso contrário.
 	 */
-	public boolean isValid()
-	{
+	public boolean isValid() {
 		switch (this.name.toLowerCase()) {
 		case "name":
 		case "description":
@@ -44,8 +45,8 @@ public class Annotation {
 			return false;
 		}
 	}
-	
-	public boolean belongsToMethod(){
+
+	public boolean belongsToMethod() {
 		switch (this.name.toLowerCase()) {
 		case "description":
 		case "performer":
@@ -56,8 +57,8 @@ public class Annotation {
 			return false;
 		}
 	}
-	
-	public boolean belongsToAttribute(){
+
+	public boolean belongsToAttribute() {
 		switch (this.name.toLowerCase()) {
 		case "description":
 			return true;
@@ -65,9 +66,8 @@ public class Annotation {
 			return false;
 		}
 	}
-	
-	public boolean belongsToClass()
-	{
+
+	public boolean belongsToClass() {
 		switch (this.name.toLowerCase()) {
 		case "name":
 		case "description":
@@ -96,8 +96,17 @@ public class Annotation {
 	}
 
 	public void setContent(String content) {
-		if(this.content == null)
+		if (this.content == null)
 			this.content = content;
-		else this.content += " " + content;
+		else
+			this.content += " " + content;
+	}
+
+	public List<String> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<String> parameters) {
+		this.parameters = parameters;
 	}
 }

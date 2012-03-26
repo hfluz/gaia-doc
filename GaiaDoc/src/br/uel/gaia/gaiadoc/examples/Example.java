@@ -21,6 +21,7 @@ public class Example {
 
 	/**
 	 * @performer Ciclano
+	 * @description Ação 1.
 	 * @basicFlow(1)
 	 */
 	public void executeAction() {

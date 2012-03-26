@@ -1,6 +1,7 @@
 package br.uel.gaia.gaiadoc.structure;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -49,5 +50,21 @@ public class Class implements Component {
 
 	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
+	}
+	public List<Method> getBasicMethods()
+	{
+		List<Method> basicMethods = new ArrayList<>();
+		for(Method m : methods)
+			if(m.isBasic()) basicMethods.add(m);
+		Collections.sort(basicMethods);
+		return basicMethods;
+	}
+	
+	public List<Method> getAlternativeMethods()
+	{
+		List<Method> alternativeMethods = new ArrayList<>();
+		for(Method m : methods)
+			if(m.isAlternative()) alternativeMethods.add(m);
+		return alternativeMethods;
 	}
 }

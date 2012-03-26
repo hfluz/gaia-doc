@@ -8,6 +8,7 @@ import br.uel.gaia.gaiadoc.pdf.factory.FontFactory;
 import br.uel.gaia.gaiadoc.pdf.factory.ParagraphFactory;
 import br.uel.gaia.gaiadoc.pdf.factory.PhraseFactory;
 import br.uel.gaia.gaiadoc.structure.Class;
+import br.uel.gaia.gaiadoc.structure.Method;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -63,7 +64,8 @@ public class PDFParser {
 			includeUseCasePreCondition();
 			includeUseCasePostCondition();
 			includeUseCaseSpecialRequirements();
-			//classe.getMethods()
+			includeBasicFlow();
+			// classe.getMethods()
 
 		} catch (DocumentException e) {
 			// handle exception
@@ -103,8 +105,10 @@ public class PDFParser {
 					extensions.size() > 1 ? "Extensões" : "Extensão",
 					SUB_HEADER));
 			for (int i = 0; i < extensions.size(); i++) {
-				document.add(ParagraphFactory.getJustifiedParagraph((i + 1)
-						+ ". " + extensions.get(i), NORMAL));
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((i + 1)
+						+ ". " + extensions.get(i), NORMAL);
+				paragraph.setFirstLineIndent(20f);
+				document.add(paragraph);
 			}
 		}
 	}
@@ -116,37 +120,74 @@ public class PDFParser {
 					preConditions.size() > 1 ? "Pré-condições" : "Pré-condição",
 					SUB_HEADER));
 			for (int i = 0; i < preConditions.size(); i++) {
-				document.add(ParagraphFactory.getJustifiedParagraph((i + 1)
-						+ ". " + preConditions.get(i), NORMAL));
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((i + 1)
+						+ ". " + preConditions.get(i), NORMAL);
+				paragraph.setFirstLineIndent(20f);
+				document.add(paragraph);
 			}
 		}
 	}
-	
+
 	private void includeUseCasePostCondition() throws DocumentException {
 		List<String> postConditions = classe.getProperty("postCondition");
 		if (!postConditions.isEmpty()) {
-			document.add(ParagraphFactory.getLeftParagraph(
-					postConditions.size() > 1 ? "Pós-condições" : "Pós-condição",
-					SUB_HEADER));
+			document.add(ParagraphFactory.getLeftParagraph(postConditions
+					.size() > 1 ? "Pós-condições" : "Pós-condição", SUB_HEADER));
 			for (int i = 0; i < postConditions.size(); i++) {
-				document.add(ParagraphFactory.getJustifiedParagraph((i + 1)
-						+ ". " + postConditions.get(i), NORMAL));
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((i + 1)
+						+ ". " + postConditions.get(i), NORMAL);
+				paragraph.setFirstLineIndent(20f);
+				document.add(paragraph);
 			}
 		}
 	}
 
 	private void includeUseCaseSpecialRequirements() throws DocumentException {
-		List<String> specialRequirements = classe.getProperty("specialRequirement");
+		List<String> specialRequirements = classe
+				.getProperty("specialRequirement");
 		if (!specialRequirements.isEmpty()) {
 			document.add(ParagraphFactory.getLeftParagraph(
-					specialRequirements.size() > 1 ? "Requisitos Especiais" : "Requisito Especial",
-					SUB_HEADER));
+					specialRequirements.size() > 1 ? "Requisitos Especiais"
+							: "Requisito Especial", SUB_HEADER));
 			for (int i = 0; i < specialRequirements.size(); i++) {
-				document.add(ParagraphFactory.getJustifiedParagraph((i + 1)
-						+ ". " + specialRequirements.get(i), NORMAL));
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((i + 1)
+						+ ". " + specialRequirements.get(i), NORMAL);
+				paragraph.setFirstLineIndent(20f);
+				document.add(paragraph);
 			}
 		}
 	}
+
+	private void includeBasicFlow() throws DocumentException {
+		List<Method> basicFlow = classe.getBasicMethods();
+		if (!basicFlow.isEmpty()) {
+			document.add(ParagraphFactory.getLeftParagraph("Fluxo Básico",
+					SUB_HEADER));
+			int index = 1;
+			for(Method m : basicFlow){
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph(index + ". " + m.getProperty("description"), NORMAL);
+				paragraph.setFirstLineIndent(20f);
+				document.add(paragraph);
+				index++;
+			}
+		}
+	}
+	
+	private void includeAlternativeFlows() throws DocumentException {
+		List<Method> alternativeFlows = classe.getAlternativeMethods();
+		if (!alternativeFlows.isEmpty()) {
+			document.add(ParagraphFactory.getLeftParagraph("Fluxo(s) Alternativo(s)",
+					SUB_HEADER));
+			int index = 1;
+			for(Method m : alternativeFlows){
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph(index + ". " + m.getProperty("description"), NORMAL);
+				paragraph.setFirstLineIndent(20f);
+				document.add(paragraph);
+				index++;
+			}
+		}
+	}
+
 	public Class getClasse() {
 		return classe;
 	}

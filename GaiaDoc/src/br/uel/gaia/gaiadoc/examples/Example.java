@@ -35,10 +35,24 @@ public class Example {
 	}
 
 	/**
-	 * @description Alternative flow 2.
+	 * @description Alternative flow 1.
 	 * @alternativeFlow('alt1',1)
 	 */
 	public void alternativeFlow() {
+	}
+	
+	/**
+	 * @description Alternative flow 2.
+	 * @alternativeFlow('alt1',2)
+	 */
+	public void alternativeFlow2() {
+	}
+	
+	/**
+	 * @description Alternative flow 3.
+	 * @alternativeFlow('alt2',1)
+	 */
+	public void alternativeFlow3() {
 	}
 }
 

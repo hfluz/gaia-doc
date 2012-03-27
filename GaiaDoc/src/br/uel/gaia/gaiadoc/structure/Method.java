@@ -69,12 +69,12 @@ public class Method implements Component, Comparable<Method> {
 		else if (seq != null && seq2 != null)
 			return seq.compareTo(seq2);
 		else {
-			seq = getBasicFlow().getParameters().get(1) != null ? Integer
-					.valueOf(getBasicFlow().getParameters().get(1)) : null;
-			String name = getBasicFlow().getParameters().get(0);
-			seq2 = o.getBasicFlow().getParameters().get(1) != null ? Integer
-					.valueOf(o.getBasicFlow().getParameters().get(1)) : null;
-			String name2 = o.getBasicFlow().getParameters().get(0);
+			seq = getAlternativeFlow().getParameters().get(1) != null ? Integer
+					.valueOf(getAlternativeFlow().getParameters().get(1)) : null;
+			String name = getAlternativeFlow().getParameters().get(0);
+			seq2 = o.getAlternativeFlow().getParameters().get(1) != null ? Integer
+					.valueOf(o.getAlternativeFlow().getParameters().get(1)) : null;
+			String name2 = o.getAlternativeFlow().getParameters().get(0);
 			if (name.compareTo(name2) != 0)
 				return name.compareTo(name2);
 			else

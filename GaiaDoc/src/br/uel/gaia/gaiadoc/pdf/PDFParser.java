@@ -65,6 +65,7 @@ public class PDFParser {
 			includeUseCasePostCondition();
 			includeUseCaseSpecialRequirements();
 			includeBasicFlow();
+			includeAlternativeFlows();
 			// classe.getMethods()
 
 		} catch (DocumentException e) {
@@ -178,12 +179,17 @@ public class PDFParser {
 		if (!alternativeFlows.isEmpty()) {
 			document.add(ParagraphFactory.getLeftParagraph("Fluxo(s) Alternativo(s)",
 					SUB_HEADER));
-			int index = 1;
-			for(Method m : alternativeFlows){
-				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph(index + ". " + m.getProperty("description"), NORMAL);
+			if(alternativeFlows.size() > 0)
+				document.add(ParagraphFactory.getLeftParagraph(alternativeFlows.get(0).getAlternativeFlow().getParameters().get(0),
+						SUB_SUB_HEADER));
+			for(int index = 0; index < alternativeFlows.size();index++){
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((index+1) + ". " + alternativeFlows.get(index).getProperty("description"), NORMAL);
 				paragraph.setFirstLineIndent(20f);
 				document.add(paragraph);
-				index++;
+				if(index+1 < alternativeFlows.size() && !alternativeFlows.get(index).getAlternativeFlow().getParameters().get(0).equals(alternativeFlows.get(index+1).getAlternativeFlow().getParameters().get(0))){
+					document.add(ParagraphFactory.getLeftParagraph(alternativeFlows.get(index+1).getAlternativeFlow().getParameters().get(0),
+							SUB_SUB_HEADER));
+				}
 			}
 		}
 	}

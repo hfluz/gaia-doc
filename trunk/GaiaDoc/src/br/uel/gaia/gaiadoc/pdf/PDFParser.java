@@ -182,13 +182,14 @@ public class PDFParser {
 			if(alternativeFlows.size() > 0)
 				document.add(ParagraphFactory.getLeftParagraph(alternativeFlows.get(0).getAlternativeFlow().getParameters().get(0),
 						SUB_SUB_HEADER));
-			for(int index = 0; index < alternativeFlows.size();index++){
-				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((index+1) + ". " + alternativeFlows.get(index).getProperty("description"), NORMAL);
+			for(int index = 0, i = 0; i < alternativeFlows.size();i++,index++){
+				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((index+1) + ". " + alternativeFlows.get(i).getProperty("description"), NORMAL);
 				paragraph.setFirstLineIndent(20f);
 				document.add(paragraph);
-				if(index+1 < alternativeFlows.size() && !alternativeFlows.get(index).getAlternativeFlow().getParameters().get(0).equals(alternativeFlows.get(index+1).getAlternativeFlow().getParameters().get(0))){
-					document.add(ParagraphFactory.getLeftParagraph(alternativeFlows.get(index+1).getAlternativeFlow().getParameters().get(0),
+				if(i+1 < alternativeFlows.size() && !alternativeFlows.get(i).getAlternativeFlow().getParameters().get(0).equals(alternativeFlows.get(i+1).getAlternativeFlow().getParameters().get(0))){
+					document.add(ParagraphFactory.getLeftParagraph(alternativeFlows.get(i+1).getAlternativeFlow().getParameters().get(0),
 							SUB_SUB_HEADER));
+					index = -1;
 				}
 			}
 		}

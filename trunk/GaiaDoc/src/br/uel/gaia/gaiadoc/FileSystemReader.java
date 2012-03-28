@@ -35,7 +35,7 @@ public class FileSystemReader {
 		try {
 			Files.walkFileTree(dir, new GaiaDocVisitor());
 			for (Path path : classes) {
-				if (path.getFileName().endsWith("Example.java"))
+				if (path.getFileName().endsWith("AutomatedTellerMachine.java"))
 					System.out.println(path.getFileName());
 			}
 		} catch (IOException e) {
@@ -53,7 +53,7 @@ public class FileSystemReader {
 
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
 			matcher = FileSystems.getDefault().getPathMatcher(
-					"glob:*Example.java");
+					"glob:*AutomatedTellerMachine.java");
 			if (attr.isRegularFile() && matcher.matches(file.getFileName())
 					&& !classes.contains(file)) {
 				classes.add(file);

@@ -120,6 +120,7 @@ public class StringUtils {
 	}
 
 	private static List<String> getParametroAlternativeFlow(String name) {
+		System.out.println(name);
 		boolean entreParenteses = false;
 		String parametro = "";
 		for (int i = 0; i < name.length(); i++) {
@@ -146,6 +147,7 @@ public class StringUtils {
 					splitedList[0].length() - 1);
 		List<String> parametros = new ArrayList<>();
 		parametros.add(splitedList[0]);
+		System.out.println("SplitedList[1]: " + splitedList[0]);
 		parametros.add(splitedList[1]);
 		return parametros;
 	}

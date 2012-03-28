@@ -10,7 +10,7 @@ public class Main {
 		FileSystemReader systemReader = new FileSystemReader();
 		systemReader.start();
 		for (Path path : systemReader.getClasses()) {
-			if (path.endsWith("Example.java")) {
+			if (path.endsWith("AutomatedTellerMachine.java")) {
 				FileReader fileReader = new FileReader(path);
 				fileReader.read();
 				new PDFParser(fileReader.getClasse()).parseDocument();

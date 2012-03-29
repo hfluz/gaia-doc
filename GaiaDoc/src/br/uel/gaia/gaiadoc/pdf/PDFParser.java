@@ -177,17 +177,19 @@ public class PDFParser {
 	private void includeAlternativeFlows() throws DocumentException {
 		List<Method> alternativeFlows = classe.getAlternativeMethods();
 		if (!alternativeFlows.isEmpty()) {
-			document.add(ParagraphFactory.getLeftParagraph("Fluxo(s) Alternativo(s)",
+			document.add(ParagraphFactory.getLeftParagraph("Fluxos Alternativos",
 					SUB_HEADER));
+			int alternativeFlowCounter = 1;
 			if(alternativeFlows.size() > 0)
-				document.add(ParagraphFactory.getLeftParagraph(alternativeFlows.get(0).getAlternativeFlow().getParameters().get(0),
+				document.add(ParagraphFactory.getLeftParagraph(alternativeFlowCounter + ". " + alternativeFlows.get(0).getAlternativeFlow().getParameters().get(0),
 						SUB_SUB_HEADER));
 			for(int index = 0, i = 0; i < alternativeFlows.size();i++,index++){
 				Paragraph paragraph = ParagraphFactory.getJustifiedParagraph((index+1) + ". " + alternativeFlows.get(i).getProperty("description"), NORMAL);
 				paragraph.setFirstLineIndent(20f);
 				document.add(paragraph);
 				if(i+1 < alternativeFlows.size() && !alternativeFlows.get(i).getAlternativeFlow().getParameters().get(0).equals(alternativeFlows.get(i+1).getAlternativeFlow().getParameters().get(0))){
-					document.add(ParagraphFactory.getLeftParagraph(alternativeFlows.get(i+1).getAlternativeFlow().getParameters().get(0),
+					alternativeFlowCounter++;
+					document.add(ParagraphFactory.getLeftParagraph(alternativeFlowCounter + ". " + alternativeFlows.get(i+1).getAlternativeFlow().getParameters().get(0),
 							SUB_SUB_HEADER));
 					index = -1;
 				}

@@ -50,8 +50,12 @@ public class AutomatedTellerMachine {
 	 * @description The Bank Customer is prompted to insert his bank credentials, which are validated.
 	 */
 	private void validateCredentials() {
-		// TODO Auto-generated method stub
-		
+		try{
+			invalidUser();
+		} catch(Exception e){
+			// Se a quantia requerida estiver incorreta.
+			wrongAmount();
+		}	
 	}
 	/**
 	 * @basicFlow(5)
@@ -77,12 +81,20 @@ public class AutomatedTellerMachine {
 		// TODO Auto-generated method stub
 		//redirectToAmount();
 	}
-//	/**
-//	 * @alternativeFlow('Wrong Amount', 2)
-//	 * @description The ATM shall display a the message indicating that the amount must be a multiple of the bills on hand, and ask the Bank Customer to reenter the amount. The use case resumes at step 7. 
-//	 */
-//	private void redirectToAmount() {
-//		// TODO Auto-generated method stub
-//		
-//	}
+	/**
+	 * @alternativeFlow('Wrong Amount', 2)
+	 * @description The ATM shall display a the message indicating that the amount must be a multiple of the bills on hand, and ask the Bank Customer to reenter the amount. The use case resumes at step 7. 
+	 */
+	private void redirectToAmount() {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * @alternativeFlow('Invalid User', 1)
+	 * @description If in step 7 in the basic flow, the Bank Customer enters an amount that can't be 'created' with the kind of in the ATM. See Special Requirements for valid amounts.
+	 */
+	private void invalidUser() {
+		// TODO Auto-generated method stub
+		
+	}
 }

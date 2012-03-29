@@ -105,7 +105,8 @@ public class StringUtils {
 				annotation.setParameters(getParametroBasicFlow(name));
 			} else if (name.startsWith("alternativeFlow")) {
 				annotation = new Annotation("alternativeFlow");
-				annotation.setParameters(getParametroAlternativeFlow(name));
+				annotation.setParameters(getParametroAlternativeFlow(name + " "
+						+ content));
 			} else {
 				System.out.println(name);
 				annotation = new Annotation(name, content.substring(0,
@@ -120,7 +121,8 @@ public class StringUtils {
 	}
 
 	private static List<String> getParametroAlternativeFlow(String name) {
-		System.out.println(name);
+		String content = name.substring(17);
+		System.out.println("Content: " + content);
 		boolean entreParenteses = false;
 		String parametro = "";
 		for (int i = 0; i < name.length(); i++) {
@@ -139,12 +141,16 @@ public class StringUtils {
 				System.out
 						.println("ERRO: Término de linha sem fechar parenteses.");
 		}
+		System.out.println("Parametro: " + parametro);
 		String[] splitedList = parametro.split(",");
 		if (splitedList[0].startsWith("'"))
 			splitedList[0] = splitedList[0].substring(1);
 		if (splitedList[0].endsWith("'"))
 			splitedList[0] = splitedList[0].substring(0,
 					splitedList[0].length() - 1);
+		else
+			splitedList[0] = splitedList[0].substring(0,
+					splitedList[0].length());
 		List<String> parametros = new ArrayList<>();
 		parametros.add(splitedList[0]);
 		System.out.println("SplitedList[1]: " + splitedList[0]);

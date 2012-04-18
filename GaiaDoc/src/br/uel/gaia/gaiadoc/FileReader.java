@@ -37,7 +37,7 @@ public class FileReader {
 	 * 
 	 */
 	public enum Status {
-		INITIAL, ATTRIBUTE, METHOD, FINAL
+		CLASS, ATTRIBUTE, METHOD, FINAL
 	}
 
 	public enum Block {
@@ -48,7 +48,7 @@ public class FileReader {
 
 		if (Files.exists(path) && Files.isRegularFile(path))
 			file = path;
-		status = Status.INITIAL;
+		status = Status.CLASS;
 		block = Block.NEW;
 		classe = new Class();
 		// TODO disparar exceção.
@@ -60,14 +60,14 @@ public class FileReader {
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				switch (status) {
-				case INITIAL:
+				case CLASS:
 					processInitial(line);
 					break;
 				case ATTRIBUTE:
-					processA(line);
+					processAttribute(line);
 					break;
 				case METHOD:
-					processB(line);
+					processMethod(line);
 					break;
 				case FINAL:
 					processFinal(line);
@@ -135,7 +135,7 @@ public class FileReader {
 	 * @param line
 	 *            Linha do arquivo.
 	 */
-	public void processA(String line) {
+	public void processAttribute(String line) {
 		if (block.equals(Block.NEW)) {
 			if (StringUtils.isCommentBlock(line)) {
 				line = StringUtils.clearLine(line);
@@ -181,7 +181,7 @@ public class FileReader {
 	 * @param line
 	 *            Linha do arquivo.
 	 */
-	public void processB(String line) {
+	public void processMethod(String line) {
 		if (StringUtils.isCommentBlock(line)) {
 			line = StringUtils.clearLine(line);
 			Annotation a = StringUtils.getAnnotation(line);

@@ -1,23 +1,24 @@
 package br.uel.gaia.gaiadoc.examples;
 
 /**
- * @name Automated Teller Machine
- * @description This use case describes how the Bank Customer uses the ATM to withdraw money to his/her bank account.
+ * @name Caixa Eletrônico
+ * @description Este caso de uso descreve como o cliente do banco usa o caixa eletrônico para sacar dinheiro de sua conta bancária.
  * @writer Humberto Ferreira da Luz Junior
- * @performer Bank Customer.
- * @performer Bank.
- * @specialRequirement The ATM shall dispense cash in multiples of $20.
- * @specialRequirement The maximum individual withdrawal is $500.
- * @specialRequirement The ATM shall keep a log, including date and time, of all complete and incomplete transactions with the Bank.
- * @preCondition There is an active network connection to the Bank.
- * @preCondition The ATM has cash available. 
- * @postCondition The user has received their cash and the internal logs have been updated.
- * @postCondition The logs have been updated accordingly.
+ * @performer Cliente do banco.
+ * @performer Banco.
+ * @specialRequirement O caixa eletrônico disponibiliza dinheiro em múltiplos de 20 reais.
+ * @specialRequirement A quantidade máxima de retirada é de 500 reais.
+ * @specialRequirement O caixa eletrônico deve manter um log, incluindo data e hora, de todas transações completas e incompletas com o banco.
+ * @specialRequirement O usuário deve estar autenticado para efetuar a transação.
+ * @preCondition Deve haver uma conexão de rede ativa com o banco.
+ * @preCondition O caixa eletrônico deve ter dinheiro disponível. 
+ * @postCondition O usuário deve ter recebido seu dinheiro e os logs internos devem ter sido atualizados.
+ * @postCondition Os logs devem ter sido atualizados corretamente.
  */
 public class AutomatedTellerMachine {
 	/**
 	 * @basicFlow(1)
-	 * @description The ATM displays the different alternatives that are available on this unit. In this case the Bank Customer always selects "Withdraw Cash".
+	 * @description O caixa eletrônico exibe as diferentes opções disponíveis nessa unidade. Nesse caso, o cliente sempre seleciona "Sacar Dinheiro".
 	 */
 	public void withdrawCash(){
 		validateAccount();
@@ -28,18 +29,18 @@ public class AutomatedTellerMachine {
 	}
 	/**
 	 * @basicFlow(2)
-	 * @description The ATM prompts for an account. See Supporting Requirement SR-yyy for account types that shall be supported. The Bank Customer inserts the required data and its account is validated.
+	 * @description O caixa eletrônico solicita o número da conta bancária. O cliente insere os dados requeridos e sua conta é validada.
 	 */
 	private void validateAccount() {
-
+		// Implementação do método.
 	}
 	/**
 	 * @basicFlow(3)
-	 * @description The ATM prompts for an amount and the Bank Customer enters an amount. The amount is validated (it verifies if there is enough money available).
+	 * @description O caixa eletrônico solicita uma quantia e o cliente a digita. A quantia é validada (verifica se há dinheiro suficiente disponível).
 	 */
 	private void checkAmount() {
 		try{
-			
+			// Implementação do método.
 		} catch(Exception e){
 			// Se a quantia requerida estiver incorreta.
 			wrongAmount();
@@ -47,54 +48,59 @@ public class AutomatedTellerMachine {
 	}
 	/**
 	 * @basicFlow(4)
-	 * @description The Bank Customer is prompted to insert his bank credentials, which are validated.
+	 * @description É solicitado ao cliente que ele insira suas credenciais bancárias, que são validadas.
 	 */
 	private void validateCredentials() {
 		try{
-			invalidUser();
+			// Implementação do método.
 		} catch(Exception e){
 			// Se a quantia requerida estiver incorreta.
-			wrongAmount();
+			invalidUser();
 		}	
 	}
 	/**
 	 * @basicFlow(5)
-	 * @description Then money is dispensed.
+	 * @description O dinheiro é liberado.
 	 */
 	private void executeOperation() {
-		// TODO Auto-generated method stub
-		
+		// Implementação do método.
 	}
 	/**
 	 * @basicFlow(6)
-	 * @description The receipt is printed and the use case ends successfully.
+	 * @description O recibo é impresso e o caso de uso se encerra com sucesso.
 	 */
 	private void printReceipt() {
-		// TODO Auto-generated method stub
-		
+		// Implementação do método.
 	}
 	/**
-	 * @alternativeFlow('Wrong Amount', 1)
-	 * @description If in step 7 in the basic flow, the Bank Customer enters an amount that can't be 'created' with the kind of in the ATM. See Special Requirements for valid amounts.
+	 * @alternativeFlow('Quantia Errada', 1)
+	 * @description Se no passo 3 no fluxo básico, o cliente entra uma quantia que não pode ser processada pelo caixa eletrônico, veja os requisitos especiais para quantias válidas.
 	 */
 	private void wrongAmount() {
-		// TODO Auto-generated method stub
-		//redirectToAmount();
+		// Implementação do método.
+		redirectToAmount();
 	}
 	/**
-	 * @alternativeFlow('Wrong Amount', 2)
-	 * @description The ATM shall display a the message indicating that the amount must be a multiple of the bills on hand, and ask the Bank Customer to reenter the amount. The use case resumes at step 7. 
+	 * @alternativeFlow('Quantia Errada', 2)
+	 * @description O caixa eletrônico deve redirecionar o cliente a uma mensagem que indica que o valor deve ser múltiplo de um determinado valor e menor que o limite diário, e solicitar ao cliente uma nova quantia. O caso de uso continua no passo 3 do fluxo básico. 
 	 */
 	private void redirectToAmount() {
-		// TODO Auto-generated method stub
-		
+		// Implementação do método.
 	}
 	/**
-	 * @alternativeFlow('Invalid User', 1)
-	 * @description If in step 7 in the basic flow, the Bank Customer enters an amount that can't be 'created' with the kind of in the ATM. See Special Requirements for valid amounts.
+	 * @alternativeFlow('Usuário Inválido', 1)
+	 * @description Se no passo 4 no fluxo básico, o cliente entra com as credenciais bancárias incorretas, veja os requisitos especiais.
 	 */
 	private void invalidUser() {
-		// TODO Auto-generated method stub
-		
+		// Implementação do método.
+		redirectToCredentials();
+	}
+	
+	/**
+	 * @alternativeFlow('Usuário Inválido', 2)
+	 * @description O caixa eletrônico deve redirecionar o cliente a uma mensagem que indica que as credenciais não foram aceitas. É solicitado novamente que o cliente digite suas credenciais e o número de tentativas permitidas do dia é decrementado. O caso de uso continua no passo 4 do fluxo básico.
+	 */
+	private void redirectToCredentials() {
+		// Implementação do método.
 	}
 }
